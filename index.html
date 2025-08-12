@@ -8,7 +8,7 @@
 <link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.4.553">
 
   <title>Métodos computacionales para las ciencias sociales</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,7 +30,7 @@
     }
     /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -221,7 +221,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -424,19 +425,19 @@
 <section id="ejemplo-de-juguete" class="slide level2">
 <h2>Ejemplo de juguete</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(quanteda.textstats)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>texto1 <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">"juego juego juego juego"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>texto2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"canto canto canto canto"</span>)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>texto3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"juego canto juego canto"</span>)</span>
-<span id="cb1-6"><a href="#cb1-6"></a></span>
-<span id="cb1-7"><a href="#cb1-7"></a>ejemplo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">text =</span> <span class="fu">c</span>(texto1, texto2, texto3))</span>
-<span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a>ejemplo <span class="sc">%&gt;%</span> </span>
-<span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-12"><a href="#cb1-12"></a>  <span class="fu">dfm</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-13"><a href="#cb1-13"></a>  <span class="fu">textstat_lexdiv</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(quanteda.textstats)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb1-3"><a href=""></a>texto1 <span class="ot">&lt;-</span>  <span class="fu">c</span>(<span class="st">"juego juego juego juego"</span>)</span>
+<span id="cb1-4"><a href=""></a>texto2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"canto canto canto canto"</span>)</span>
+<span id="cb1-5"><a href=""></a>texto3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"juego canto juego canto"</span>)</span>
+<span id="cb1-6"><a href=""></a></span>
+<span id="cb1-7"><a href=""></a>ejemplo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">text =</span> <span class="fu">c</span>(texto1, texto2, texto3))</span>
+<span id="cb1-8"><a href=""></a></span>
+<span id="cb1-9"><a href=""></a>ejemplo <span class="sc">%&gt;%</span> </span>
+<span id="cb1-10"><a href=""></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href=""></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href=""></a>  <span class="fu">dfm</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-13"><a href=""></a>  <span class="fu">textstat_lexdiv</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  document  TTR
 1    text1 0.25
@@ -459,16 +460,16 @@
 </div>
 <div id="tabset-1-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(<span class="st">"readtext"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>allende <span class="ot">&lt;-</span> <span class="fu">readtext</span>(<span class="st">"data/discurso_allende.txt"</span>)  </span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a>dfm_mat <span class="ot">&lt;-</span> allende <span class="sc">%&gt;%</span> </span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">dfm</span>() </span>
-<span id="cb4-8"><a href="#cb4-8"></a>  </span>
-<span id="cb4-9"><a href="#cb4-9"></a>diversidad <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfm_mat)</span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="fu">print</span>(diversidad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(<span class="st">"readtext"</span>)</span>
+<span id="cb4-2"><a href=""></a>allende <span class="ot">&lt;-</span> <span class="fu">readtext</span>(<span class="st">"data/discurso_allende.txt"</span>)  </span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a>dfm_mat <span class="ot">&lt;-</span> allende <span class="sc">%&gt;%</span> </span>
+<span id="cb4-5"><a href=""></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href=""></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href=""></a>  <span class="fu">dfm</span>() </span>
+<span id="cb4-8"><a href=""></a>  </span>
+<span id="cb4-9"><a href=""></a>diversidad <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfm_mat)</span>
+<span id="cb4-10"><a href=""></a><span class="fu">print</span>(diversidad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              document       TTR
 1 discurso_allende.txt 0.5032895</code></pre>
@@ -477,14 +478,14 @@
 </div>
 <div id="tabset-1-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>dfm_mat <span class="ot">&lt;-</span> allende <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">tokens_select</span>(<span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span> ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">dfm</span>() </span>
-<span id="cb6-6"><a href="#cb6-6"></a>  </span>
-<span id="cb6-7"><a href="#cb6-7"></a>diversidad <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfm_mat)</span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">print</span>(diversidad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>dfm_mat <span class="ot">&lt;-</span> allende <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">corpus</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href=""></a>  <span class="fu">tokens</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href=""></a>  <span class="fu">tokens_select</span>(<span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href=""></a>  <span class="fu">dfm</span>() </span>
+<span id="cb6-6"><a href=""></a>  </span>
+<span id="cb6-7"><a href=""></a>diversidad <span class="ot">&lt;-</span> <span class="fu">textstat_lexdiv</span>(dfm_mat)</span>
+<span id="cb6-8"><a href=""></a><span class="fu">print</span>(diversidad)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>              document       TTR
 1 discurso_allende.txt 0.8148148</code></pre>
@@ -507,33 +508,37 @@
 <div class="fragment">
 <p>Exploraremos noticias en inglés del Guardian (política, sociedad e internacional. 2012-2016)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(quanteda)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">library</span>(quanteda.textstats)</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">library</span>(quanteda.textplots)</span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">require</span>(quanteda.corpora) <span class="do">## solo disponible en github</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb8-2"><a href=""></a><span class="fu">library</span>(quanteda.textstats)</span>
+<span id="cb8-3"><a href=""></a><span class="fu">library</span>(quanteda.textplots)</span>
+<span id="cb8-4"><a href=""></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb8-5"><a href=""></a><span class="fu">require</span>(quanteda.corpora) <span class="do">## solo disponible en github</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </section>
 <section id="descargar-y-procesar" class="slide level2">
 <h2>Descargar y procesar</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>corpus_guardian <span class="ot">&lt;-</span> <span class="fu">download</span>(<span class="st">"data_corpus_guardian"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(corpus_guardian, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb9-3"><a href="#cb9-3"></a>dfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(tokens)</span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">print</span>(<span class="fu">dim</span>(dfm)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>corpus_guardian <span class="ot">&lt;-</span> <span class="fu">download</span>(<span class="st">"data_corpus_guardian"</span>)</span>
+<span id="cb9-2"><a href=""></a>tokens <span class="ot">&lt;-</span> <span class="fu">tokens</span>(corpus_guardian, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb9-3"><a href=""></a>dfm <span class="ot">&lt;-</span> <span class="fu">dfm</span>(tokens)</span>
+<span id="cb9-4"><a href=""></a><span class="fu">print</span>(<span class="fu">dim</span>(dfm)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1]  6000 99515</code></pre>
+<pre><code>[1]  6000 99310</code></pre>
 </div>
 </div>
 <p>6000 noticia procesadas</p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>tstat_key <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm, </span>
-<span id="cb11-2"><a href="#cb11-2"></a>                              <span class="at">target =</span> <span class="fu">year</span>(dfm<span class="sc">$</span>date) <span class="sc">&gt;=</span> <span class="dv">2016</span>)</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">textplot_keyness</span>(tstat_key)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>tstat_key <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm, </span>
+<span id="cb11-2"><a href=""></a>                              <span class="at">target =</span> <span class="fu">year</span>(dfm<span class="sc">$</span>date) <span class="sc">&gt;=</span> <span class="dv">2016</span>)</span>
+<span id="cb11-3"><a href=""></a><span class="fu">textplot_keyness</span>(tstat_key)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="index_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -570,89 +575,97 @@
 </div>
 <div id="tabset-2-2">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(readtext)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb12-3"><a href="#cb12-3"></a></span>
-<span id="cb12-4"><a href="#cb12-4"></a><span class="co"># Cargar datos</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>data <span class="ot">&lt;-</span> <span class="fu">readtext</span>(<span class="st">"data/partidos/*.pdf"</span>) <span class="co"># algunos programas están en pdf</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>data2 <span class="ot">&lt;-</span> <span class="fu">readtext</span>(<span class="st">"data/partidos/*.txt"</span>) <span class="co"># otros están en txt </span></span>
-<span id="cb12-7"><a href="#cb12-7"></a></span>
-<span id="cb12-8"><a href="#cb12-8"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">bind_rows</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">library</span>(readtext)</span>
+<span id="cb12-2"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb12-3"><a href=""></a></span>
+<span id="cb12-4"><a href=""></a><span class="co"># Cargar datos</span></span>
+<span id="cb12-5"><a href=""></a>data <span class="ot">&lt;-</span> <span class="fu">readtext</span>(<span class="st">"data/partidos/*.pdf"</span>) <span class="co"># algunos programas están en pdf</span></span>
+<span id="cb12-6"><a href=""></a>data2 <span class="ot">&lt;-</span> <span class="fu">readtext</span>(<span class="st">"data/partidos/*.txt"</span>) <span class="co"># otros están en txt </span></span>
+<span id="cb12-7"><a href=""></a></span>
+<span id="cb12-8"><a href=""></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb12-9"><a href=""></a>  <span class="fu">bind_rows</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-3">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Sacar caracteres molestos</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>data_edit <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
-<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_replace_all</span>(text, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">" "</span>),</span>
-<span id="cb13-4"><a href="#cb13-4"></a>         <span class="at">text =</span> <span class="fu">tolower</span>(text)</span>
-<span id="cb13-5"><a href="#cb13-5"></a>         ) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">mutate</span>(<span class="at">doc_id =</span> <span class="fu">case_when</span>(</span>
-<span id="cb13-7"><a href="#cb13-7"></a>    doc_id <span class="sc">==</span> <span class="st">"Declaración_Principios_PC.pdf"</span> <span class="sc">~</span> <span class="st">"pc"</span>,</span>
-<span id="cb13-8"><a href="#cb13-8"></a>    doc_id <span class="sc">==</span> <span class="st">"Declracion-de-Principios-PSCH_2018.pdf"</span> <span class="sc">~</span> <span class="st">"ps"</span>,</span>
-<span id="cb13-9"><a href="#cb13-9"></a>    doc_id <span class="sc">==</span> <span class="st">"declaracion_rd.pdf"</span> <span class="sc">~</span> <span class="st">"rd"</span>,</span>
-<span id="cb13-10"><a href="#cb13-10"></a>    doc_id <span class="sc">==</span> <span class="st">"cs.txt"</span> <span class="sc">~</span> <span class="st">"cs"</span>,</span>
-<span id="cb13-11"><a href="#cb13-11"></a>    doc_id <span class="sc">==</span> <span class="st">"DECLARACION-PRINCIPIOS-PDC.pdf"</span>  <span class="sc">~</span> <span class="st">"dc"</span>,</span>
-<span id="cb13-12"><a href="#cb13-12"></a>    doc_id <span class="sc">==</span> <span class="st">"DECLARACIÓN DE PRINCIPIOS RENOVACIÓN NACIONAL.pdf"</span> <span class="sc">~</span> <span class="st">"rn"</span>,</span>
-<span id="cb13-13"><a href="#cb13-13"></a>    doc_id <span class="sc">==</span> <span class="st">"evopoli.txt"</span> <span class="sc">~</span> <span class="st">"evopoli"</span>,</span>
-<span id="cb13-14"><a href="#cb13-14"></a>    doc_id <span class="sc">==</span> <span class="st">"Declaracion de principios 2017 udi.pdf"</span> <span class="sc">~</span> <span class="st">"udi"</span>,</span>
-<span id="cb13-15"><a href="#cb13-15"></a>    doc_id <span class="sc">==</span> <span class="st">"republicanos.txt"</span> <span class="sc">~</span> <span class="st">"republicanos"</span>,</span>
-<span id="cb13-16"><a href="#cb13-16"></a>    doc_id <span class="sc">==</span> <span class="st">"radical.txt"</span> <span class="sc">~</span> <span class="st">"radical"</span></span>
-<span id="cb13-17"><a href="#cb13-17"></a>  )) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-18"><a href="#cb13-18"></a>  <span class="fu">mutate</span>(<span class="at">izquierda =</span> <span class="fu">if_else</span>(doc_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"rd"</span>, <span class="st">"pc"</span>, <span class="st">"ps"</span>, <span class="st">"cs"</span>), <span class="dv">1</span>, <span class="dv">0</span> )) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-19"><a href="#cb13-19"></a>  <span class="fu">filter</span>(izquierda <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> doc_id <span class="sc">==</span> <span class="st">"dc"</span> <span class="sc">|</span> doc_id <span class="sc">==</span> <span class="st">"rn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="co"># Sacar caracteres molestos</span></span>
+<span id="cb13-2"><a href=""></a>data_edit <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">text =</span> <span class="fu">str_replace_all</span>(text, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">" "</span>),</span>
+<span id="cb13-4"><a href=""></a>         <span class="at">text =</span> <span class="fu">tolower</span>(text)</span>
+<span id="cb13-5"><a href=""></a>         ) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-6"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">doc_id =</span> <span class="fu">case_when</span>(</span>
+<span id="cb13-7"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"Declaración_Principios_PC.pdf"</span> <span class="sc">~</span> <span class="st">"pc"</span>,</span>
+<span id="cb13-8"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"Declracion-de-Principios-PSCH_2018.pdf"</span> <span class="sc">~</span> <span class="st">"ps"</span>,</span>
+<span id="cb13-9"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"declaracion_rd.pdf"</span> <span class="sc">~</span> <span class="st">"rd"</span>,</span>
+<span id="cb13-10"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"cs.txt"</span> <span class="sc">~</span> <span class="st">"cs"</span>,</span>
+<span id="cb13-11"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"DECLARACION-PRINCIPIOS-PDC.pdf"</span>  <span class="sc">~</span> <span class="st">"dc"</span>,</span>
+<span id="cb13-12"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"DECLARACIÓN DE PRINCIPIOS RENOVACIÓN NACIONAL.pdf"</span> <span class="sc">~</span> <span class="st">"rn"</span>,</span>
+<span id="cb13-13"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"evopoli.txt"</span> <span class="sc">~</span> <span class="st">"evopoli"</span>,</span>
+<span id="cb13-14"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"Declaracion de principios 2017 udi.pdf"</span> <span class="sc">~</span> <span class="st">"udi"</span>,</span>
+<span id="cb13-15"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"republicanos.txt"</span> <span class="sc">~</span> <span class="st">"republicanos"</span>,</span>
+<span id="cb13-16"><a href=""></a>    doc_id <span class="sc">==</span> <span class="st">"radical.txt"</span> <span class="sc">~</span> <span class="st">"radical"</span></span>
+<span id="cb13-17"><a href=""></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-18"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">izquierda =</span> <span class="fu">if_else</span>(doc_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"rd"</span>, <span class="st">"pc"</span>, <span class="st">"ps"</span>, <span class="st">"cs"</span>), <span class="dv">1</span>, <span class="dv">0</span> )) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-19"><a href=""></a>  <span class="fu">filter</span>(izquierda <span class="sc">==</span> <span class="dv">1</span> <span class="sc">|</span> doc_id <span class="sc">==</span> <span class="st">"dc"</span> <span class="sc">|</span> doc_id <span class="sc">==</span> <span class="st">"rn"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-4">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>tokens <span class="ot">&lt;-</span> <span class="fu">corpus</span>(data_edit) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">tokens</span>(<span class="at">remove_punct =</span> <span class="cn">TRUE</span>, <span class="at">remove_numbers =</span> T) <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">tokens_select</span>(<span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span>, <span class="at">min_nchar=</span>3L) </span>
-<span id="cb14-4"><a href="#cb14-4"></a></span>
-<span id="cb14-5"><a href="#cb14-5"></a>dfm <span class="ot">&lt;-</span> tokens <span class="sc">%&gt;%</span> </span>
-<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">dfm</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>tokens <span class="ot">&lt;-</span> <span class="fu">corpus</span>(data_edit) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href=""></a>  <span class="fu">tokens</span>(<span class="at">remove_punct =</span> <span class="cn">TRUE</span>, <span class="at">remove_numbers =</span> T) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href=""></a>  <span class="fu">tokens_select</span>(<span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"es"</span>), <span class="at">selection =</span> <span class="st">"remove"</span>, <span class="at">min_nchar=</span><span class="dv">3</span>L) </span>
+<span id="cb14-4"><a href=""></a></span>
+<span id="cb14-5"><a href=""></a>dfm <span class="ot">&lt;-</span> tokens <span class="sc">%&gt;%</span> </span>
+<span id="cb14-6"><a href=""></a>  <span class="fu">dfm</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-5">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(quanteda.textmodels)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>wf <span class="ot">&lt;-</span> <span class="fu">textmodel_wordfish</span>( dfm, <span class="at">dir =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>) ) <span class="co"># </span></span>
-<span id="cb15-3"><a href="#cb15-3"></a></span>
-<span id="cb15-4"><a href="#cb15-4"></a><span class="co"># Función de quanteda para crear gráfico</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="fu">textplot_scale1d</span>(wf)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">library</span>(quanteda.textmodels)</span>
+<span id="cb15-2"><a href=""></a>wf <span class="ot">&lt;-</span> <span class="fu">textmodel_wordfish</span>( dfm, <span class="at">dir =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>) ) <span class="co"># </span></span>
+<span id="cb15-3"><a href=""></a></span>
+<span id="cb15-4"><a href=""></a><span class="co"># Función de quanteda para crear gráfico</span></span>
+<span id="cb15-5"><a href=""></a><span class="fu">textplot_scale1d</span>(wf)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="index_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div id="tabset-2-6">
 <p>El parámetro <span class="math inline">\(\theta\)</span> corresponde a <span class="math inline">\(ω\)</span> en el modelo inicial</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Construir intervalos de confianza </span></span>
-<span id="cb16-2"><a href="#cb16-2"></a>theta <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">docs =</span> wf<span class="sc">$</span>docs, <span class="at">theta =</span> wf<span class="sc">$</span>theta, <span class="at">se =</span> wf<span class="sc">$</span>se.theta) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">mutate</span>(<span class="at">lower =</span> theta <span class="sc">-</span>  <span class="fl">1.96</span> <span class="sc">*</span> se,</span>
-<span id="cb16-4"><a href="#cb16-4"></a>         <span class="at">upper =</span> theta <span class="sc">+</span>  <span class="fl">1.96</span> <span class="sc">*</span> se</span>
-<span id="cb16-5"><a href="#cb16-5"></a>         )</span>
-<span id="cb16-6"><a href="#cb16-6"></a></span>
-<span id="cb16-7"><a href="#cb16-7"></a>theta <span class="sc">%&gt;%</span> </span>
-<span id="cb16-8"><a href="#cb16-8"></a>  <span class="fu">mutate</span>(<span class="at">docs =</span> <span class="fu">toupper</span>(docs)) <span class="sc">%&gt;%</span> </span>
-<span id="cb16-9"><a href="#cb16-9"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span>  <span class="fu">reorder</span>(docs, theta), <span class="at">y =</span> theta)) <span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb16-11"><a href="#cb16-11"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> docs, <span class="at">y =</span> lower , </span>
-<span id="cb16-13"><a href="#cb16-13"></a>                   <span class="at">xend =</span> docs, <span class="at">yend =</span> upper ,</span>
-<span id="cb16-14"><a href="#cb16-14"></a>                   <span class="at">colour =</span> <span class="st">"segment"</span>))  <span class="sc">+</span></span>
-<span id="cb16-15"><a href="#cb16-15"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Puntajes wordfish a partir de declaración de principios de los partidos"</span>) <span class="sc">+</span></span>
-<span id="cb16-16"><a href="#cb16-16"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb16-17"><a href="#cb16-17"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
-<span id="cb16-18"><a href="#cb16-18"></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb16-19"><a href="#cb16-19"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
-<span id="cb16-20"><a href="#cb16-20"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">18</span>),</span>
-<span id="cb16-21"><a href="#cb16-21"></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb16-22"><a href="#cb16-22"></a>        ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Construir intervalos de confianza </span></span>
+<span id="cb16-2"><a href=""></a>theta <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">docs =</span> wf<span class="sc">$</span>docs, <span class="at">theta =</span> wf<span class="sc">$</span>theta, <span class="at">se =</span> wf<span class="sc">$</span>se.theta) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">lower =</span> theta <span class="sc">-</span>  <span class="fl">1.96</span> <span class="sc">*</span> se,</span>
+<span id="cb16-4"><a href=""></a>         <span class="at">upper =</span> theta <span class="sc">+</span>  <span class="fl">1.96</span> <span class="sc">*</span> se</span>
+<span id="cb16-5"><a href=""></a>         )</span>
+<span id="cb16-6"><a href=""></a></span>
+<span id="cb16-7"><a href=""></a>theta <span class="sc">%&gt;%</span> </span>
+<span id="cb16-8"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">docs =</span> <span class="fu">toupper</span>(docs)) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-9"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span>  <span class="fu">reorder</span>(docs, theta), <span class="at">y =</span> theta)) <span class="sc">+</span></span>
+<span id="cb16-10"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-11"><a href=""></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb16-12"><a href=""></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> docs, <span class="at">y =</span> lower , </span>
+<span id="cb16-13"><a href=""></a>                   <span class="at">xend =</span> docs, <span class="at">yend =</span> upper ,</span>
+<span id="cb16-14"><a href=""></a>                   <span class="at">colour =</span> <span class="st">"segment"</span>))  <span class="sc">+</span></span>
+<span id="cb16-15"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Puntajes wordfish a partir de declaración de principios de los partidos"</span>) <span class="sc">+</span></span>
+<span id="cb16-16"><a href=""></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb16-17"><a href=""></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb16-18"><a href=""></a>        <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb16-19"><a href=""></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb16-20"><a href=""></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">18</span>),</span>
+<span id="cb16-21"><a href=""></a>        <span class="at">panel.border =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb16-22"><a href=""></a>        ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="index_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -662,13 +675,13 @@
 <section id="poder-descriminador-de-palabras" class="slide level2">
 <h2>Poder descriminador de palabras</h2>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>plot_words <span class="ot">&lt;-</span>  <span class="fu">textplot_scale1d</span>(wf, <span class="at">margin=</span><span class="st">"features"</span>, <span class="at">highlighted =</span> <span class="fu">c</span>(<span class="st">"comunista"</span>, <span class="st">"socialista"</span>, <span class="st">"recabarren"</span>, <span class="st">"revolucionarios"</span>, <span class="st">"empleo"</span>, <span class="st">"delictual"</span>, <span class="st">"religiosa"</span>, <span class="st">"chile"</span>))</span>
-<span id="cb17-2"><a href="#cb17-2"></a>       </span>
-<span id="cb17-3"><a href="#cb17-3"></a>plot_words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>plot_words <span class="ot">&lt;-</span>  <span class="fu">textplot_scale1d</span>(wf, <span class="at">margin=</span><span class="st">"features"</span>, <span class="at">highlighted =</span> <span class="fu">c</span>(<span class="st">"comunista"</span>, <span class="st">"socialista"</span>, <span class="st">"recabarren"</span>, <span class="st">"revolucionarios"</span>, <span class="st">"empleo"</span>, <span class="st">"delictual"</span>, <span class="st">"religiosa"</span>, <span class="st">"chile"</span>))</span>
+<span id="cb17-2"><a href=""></a>       </span>
+<span id="cb17-3"><a href=""></a>plot_words</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="index_files/figure-revealjs/unnamed-chunk-15-1.png" width="672"></p>
+<p><img data-src="index_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" width="672"></p>
 </figure>
 </div>
 </div>
@@ -685,10 +698,10 @@
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(topicmodels)</span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="fu">data</span>(<span class="st">"AssociatedPress"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a>AssociatedPress</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">library</span>(topicmodels)</span>
+<span id="cb18-2"><a href=""></a></span>
+<span id="cb18-3"><a href=""></a><span class="fu">data</span>(<span class="st">"AssociatedPress"</span>)</span>
+<span id="cb18-4"><a href=""></a>AssociatedPress</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;&lt;DocumentTermMatrix (documents: 2246, terms: 10473)&gt;&gt;
 Non-/sparse entries: 302031/23220327
@@ -700,8 +713,8 @@ Weighting          : term frequency (tf)</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(AssociatedPress, <span class="at">k =</span> <span class="dv">2</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>))</span>
-<span id="cb20-2"><a href="#cb20-2"></a>lda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(AssociatedPress, <span class="at">k =</span> <span class="dv">2</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>))</span>
+<span id="cb20-2"><a href=""></a>lda</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>A LDA_VEM topic model with 2 topics.</code></pre>
 </div>
@@ -712,9 +725,9 @@ Weighting          : term frequency (tf)</code></pre>
 <h2>Topic modeling</h2>
 <p>beta: Probabilidad de que una palabra sea generada por un tópico</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(tidytext)</span>
-<span id="cb22-2"><a href="#cb22-2"></a>topics <span class="ot">&lt;-</span> <span class="fu">tidy</span>(lda, <span class="at">matrix =</span> <span class="st">"beta"</span>)</span>
-<span id="cb22-3"><a href="#cb22-3"></a>topics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb22-2"><a href=""></a>topics <span class="ot">&lt;-</span> <span class="fu">tidy</span>(lda, <span class="at">matrix =</span> <span class="st">"beta"</span>)</span>
+<span id="cb22-3"><a href=""></a>topics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20,946 × 3
    topic term           beta
@@ -736,43 +749,56 @@ Weighting          : term frequency (tf)</code></pre>
 <section id="topic-modeling-2" class="slide level2">
 <h2>Topic modeling</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>top_terms <span class="ot">&lt;-</span> topics <span class="sc">%&gt;%</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">slice_max</span>(beta, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a>  <span class="fu">arrange</span>(topic, <span class="sc">-</span>beta)</span>
-<span id="cb24-6"><a href="#cb24-6"></a></span>
-<span id="cb24-7"><a href="#cb24-7"></a>top_terms <span class="sc">%&gt;%</span></span>
-<span id="cb24-8"><a href="#cb24-8"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-9"><a href="#cb24-9"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
-<span id="cb24-10"><a href="#cb24-10"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb24-11"><a href="#cb24-11"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> topic, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
-<span id="cb24-12"><a href="#cb24-12"></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>top_terms <span class="ot">&lt;-</span> topics <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href=""></a>  <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href=""></a>  <span class="fu">slice_max</span>(beta, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-4"><a href=""></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href=""></a>  <span class="fu">arrange</span>(topic, <span class="sc">-</span>beta)</span>
+<span id="cb24-6"><a href=""></a></span>
+<span id="cb24-7"><a href=""></a>top_terms <span class="sc">%&gt;%</span></span>
+<span id="cb24-8"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-9"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
+<span id="cb24-10"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb24-11"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> topic, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb24-12"><a href=""></a>  <span class="fu">scale_y_reordered</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="index_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="topic-modeling-3" class="slide level2">
 <h2>Topic modeling</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>beta_wide <span class="ot">&lt;-</span> topics <span class="sc">%&gt;%</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">mutate</span>(<span class="at">topic =</span> <span class="fu">paste0</span>(<span class="st">"topic"</span>, topic)) <span class="sc">%&gt;%</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> topic, <span class="at">values_from =</span> beta) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">filter</span>(topic1 <span class="sc">&gt;</span> .<span class="dv">001</span> <span class="sc">|</span> topic2 <span class="sc">&gt;</span> .<span class="dv">001</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>  <span class="fu">mutate</span>(<span class="at">log_ratio =</span> <span class="fu">log2</span>(topic2 <span class="sc">/</span> topic1))</span>
-<span id="cb25-6"><a href="#cb25-6"></a></span>
-<span id="cb25-7"><a href="#cb25-7"></a>beta_wide <span class="sc">%&gt;%</span></span>
-<span id="cb25-8"><a href="#cb25-8"></a>  <span class="fu">mutate</span>(<span class="at">new_log =</span> <span class="fu">abs</span>(log_ratio)) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-9"><a href="#cb25-9"></a>  <span class="fu">slice_max</span>(new_log, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb25-10"><a href="#cb25-10"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(term, <span class="fu">desc</span>(new_log)) , <span class="at">y =</span> log_ratio)) <span class="sc">+</span></span>
-<span id="cb25-11"><a href="#cb25-11"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb25-12"><a href="#cb25-12"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb25-13"><a href="#cb25-13"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>beta_wide <span class="ot">&lt;-</span> topics <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">topic =</span> <span class="fu">paste0</span>(<span class="st">"topic"</span>, topic)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href=""></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> topic, <span class="at">values_from =</span> beta) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-4"><a href=""></a>  <span class="fu">filter</span>(topic1 <span class="sc">&gt;</span> .<span class="dv">001</span> <span class="sc">|</span> topic2 <span class="sc">&gt;</span> .<span class="dv">001</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb25-5"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">log_ratio =</span> <span class="fu">log2</span>(topic2 <span class="sc">/</span> topic1))</span>
+<span id="cb25-6"><a href=""></a></span>
+<span id="cb25-7"><a href=""></a>beta_wide <span class="sc">%&gt;%</span></span>
+<span id="cb25-8"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">new_log =</span> <span class="fu">abs</span>(log_ratio)) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-9"><a href=""></a>  <span class="fu">slice_max</span>(new_log, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-10"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(term, <span class="fu">desc</span>(new_log)) , <span class="at">y =</span> log_ratio)) <span class="sc">+</span></span>
+<span id="cb25-11"><a href=""></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb25-12"><a href=""></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb25-13"><a href=""></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="index_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+</figure>
 </div>
 </div>
+</div>
+</section>
+<section id="bertopic" class="slide level2">
+<h2>Bertopic</h2>
+<iframe src="topicos_noticias.html" width="100%" height="500" style="border:none;">
+</iframe>
 </section>
 <section id="más-recursos" class="slide level2">
 <h2>Más recursos</h2>
@@ -796,8 +822,10 @@ Weighting          : term frequency (tf)</code></pre>
 </section>
 <section id="métodos-computacionales-para-las-ciencias-sociales" class="title-slide slide level1 center" data-background-color="aquamarine">
 <h1>Métodos computacionales para las ciencias sociales</h1>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 
+</div>
 </div>
 </section>
     </div>
@@ -826,7 +854,6 @@ Weighting          : term frequency (tf)</code></pre>
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1125,10 +1152,32 @@ Weighting          : term frequency (tf)</code></pre>
         // clear code selection
         e.clearSelection();
       });
-      function tippyHover(el, contentFn) {
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+              // target, if specified
+              link.setAttribute("target", "_blank");
+              if (link.getAttribute("rel") === null) {
+                link.setAttribute("rel", "noopener");
+              }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1138,8 +1187,17 @@ Weighting          : term frequency (tf)</code></pre>
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1153,7 +1211,11 @@ Weighting          : term frequency (tf)</code></pre>
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
@@ -1193,20 +1255,6 @@ Weighting          : term frequency (tf)</code></pre>
           });
         }
       }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href);
-        }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-              // target, if specified
-              link.setAttribute("target", "_blank");
-          }
-        }
     });
     </script>
     
