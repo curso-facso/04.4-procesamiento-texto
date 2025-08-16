@@ -36,3 +36,12 @@
     font-size: 30px;
 
 }
+
+/* para la lámina del iframe */
+.full-width-iframe {
+    width: 100vw;
+    height: 100vh;
+    border: none;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+}

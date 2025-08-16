@@ -10,6 +10,8 @@ css: style.css
 editor: source
 execute:
   echo: false
+  python:
+    executable: ./.venv/bin/python
 ---
 
 ```{r, echo=FALSE}
@@ -166,13 +168,13 @@ Modelo no supervisado para hacer posicionamiento ideológico
 
 . . .
 
-Nos permite posicionar textos en un espacio de una dimensión 
+Nos permite posicionar textos en un espacio de una dimensión
 
 . . .
 
-Se basa únicamente en la frecuencia de las palabras 
+Se basa únicamente en la frecuencia de las palabras
 
-. . . 
+. . .
 
 $y_{ijt}=Poisson(\lambda_{ijt})$
 
@@ -192,10 +194,7 @@ $β$: Poder discriminador de las palabras
 
 ## Implementación wordfish
 
-
-
 ::: panel-tabset
-
 ## Datos
 
 Declaraciones de principios de partidos
@@ -204,9 +203,7 @@ Obligación de publicarse por Ley de Transparencia
 
 Tenemos algunos en pdf y otros en txt
 
-
-## Carga 
-
+## Carga
 
 ```{r, echo=TRUE}
 library(readtext)
@@ -262,7 +259,6 @@ dfm <- tokens %>%
 
 ## wordfish
 
-
 ```{r, echo=TRUE}
 library(quanteda.textmodels)
 wf <- textmodel_wordfish( dfm, dir = c(2, 1) ) # 
@@ -275,8 +271,7 @@ textplot_scale1d(wf)
 
 ## gráfico propio
 
-El parámetro $\theta$ corresponde a $ω$ en el modelo inicial  
-
+El parámetro $\theta$ corresponde a $ω$ en el modelo inicial
 
 ```{r, echo=TRUE}
 
@@ -304,8 +299,6 @@ theta %>%
         ) 
 
 ```
-
-
 :::
 
 ## Poder descriminador de palabras
@@ -318,10 +311,9 @@ plot_words
 
 ```
 
-
 ## Topic modeling
 
-LDA: Latent Dirichlet allocation 
+LDA: Latent Dirichlet allocation
 
 . . .
 
@@ -357,7 +349,6 @@ library(tidytext)
 topics <- tidy(lda, matrix = "beta")
 topics
 ```
-
 
 ## Topic modeling
 
@@ -397,9 +388,335 @@ beta_wide %>%
 
 ## Bertopic
 
-<iframe src="topicos_noticias.html" width="100%" height="500" style="border:none;"></iframe>
+**200.000 noticias de medios chilenos**
+
+<iframe src="topicos_noticias_prod.html" class="full-width-iframe" height="500" width="100%" style="border:none;">
+
+</iframe>
+
+## Bertopic
+
+![](imagenes/bertopic.png){fig-align="center" width="317"}
+
+Aquí encontrarás la [documentación](https://maartengr.github.io/BERTopic/index.html)
+
+## Pasos de Bertopic
+
+::: columns
+::: {.column width="40%"}
+![](imagenes/bertopic_pasos.svg){fig-align="center" width="483"}
+:::
+
+::: {.column width="60%"}
+Utiliza todo lo que hemos aprendido hasta ahora
+:::
+:::
+
+## Pasos
+
+1.  Todos los textos son transformados en vectores con un modelo de lenguaje
+2.  Se aplica un algoritmo de reducción de dimensionalidad (pca, umap, tsne u otro)
+3.  Se aplica un algoritmo de clustering (DBSCAN, kmeans u otro)
+4.  Vectorización de los textos
+5.  Esquema de ponderación mediante c-TF-IDF
+6.  Opcional: fine-tuning de los tópicos
+
+## Paso 0: cargar datos
+
+```{python, echo=TRUE}
+import pandas as pd
+
+# Cargar datos
+data = pd.read_parquet("data/titulos.parquet")
+
+# Hacemos una muestra de 500 documentos
+data = data.sample(n = 500, random_state=42)
+docs = list(data.text)
+del data
+print(docs[0:10])
+```
+
+## Paso 1: construir embeddings
+
+```{python, echo = TRUE}
+from bertopic import BERTopic
+from sentence_transformers import SentenceTransformer
+
+# Modelo de embeddings
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
+# Generamos la instancia de BERTopic
+topic_model = BERTopic(embedding_model=embedding_model)
+
+# Generamos los embeddings
+topic_model.fit_transform(docs)
+print("Terminé de generar embeddings")
+
+# Guardamos los embeddings en un un arreglo
+embeddings =  topic_model._extract_embeddings(docs, method="document")
+
+# Tenemos una matriz 
+print("Dimensiones de la matriz de embeddings:", embeddings.shape)
+```
+
+## Paso 2: reducción de dimensionalidad
+
+Aplicamos UMAP a la matriz de embeddings
+
+```{python, echo=TRUE}
+from umap import UMAP
+umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine')
+umap_embeddings = umap_model.fit_transform(embeddings)
+print(umap_embeddings.shape)
 
 
+```
+
+## Paso 3: clustering
+
+Aplicamos HDBSCAN a la matriz reducida que viene de UMAP
+
+El tópico -1 corresponde a *outliers*
+
+```{python, echo=TRUE}
+from hdbscan import HDBSCAN
+hdbscan_model = HDBSCAN(min_cluster_size=3, metric='euclidean', cluster_selection_method='eom', prediction_data=True)
+hdbscan_model.fit(umap_embeddings)
+clusters = hdbscan_model.labels_
+print(clusters)
+
+
+```
+
+## Paso 4: vectorización
+
+Los textos son transformados en una matriz BoW
+
+```{python, echo=TRUE}
+from sklearn.feature_extraction.text import CountVectorizer
+import nltk
+from nltk.corpus import stopwords
+import numpy as np
+
+# Descargar stopwords en español
+#nltk.download('stopwords') solo se descarga una vez
+stopwords_es = stopwords.words('spanish')
+
+# Creaamos la instancia del vectorizador
+vectorizer_model = CountVectorizer(stop_words=stopwords_es, min_df = 3)
+
+# Transformamos los documentos en una matriz de términos
+X = vectorizer_model.fit_transform(docs)   
+
+
+```
+
+
+
+## Paso 4: vectorización (continuación)
+
+```{python, echo=TRUE}
+print("Las dimensiones de la matriz son: ", X.shape)
+
+print("Algunas palabras del vocabulario:")
+
+vocab = np.array(vectorizer_model.get_feature_names_out())
+
+print(vocab[0:20])
+
+
+```
+
+## Paso 5: c-TF-IDF
+
+Cada tópico es representado con un enfoque c-TF-IDF
+
+El peso de la palabra $w$ en el tópico $c$ está dado por
+
+$$
+{W}_{w,c} = tf_{w,c} * log(1 + \frac{A}{f_{w}}) 
+$$
+
+-   $tf_{t,c}$: frecuencia de la palabra $x$ en la clase $c$
+-   $A$: Promedio de palabras por clase
+-   $f_{w}$: frecuencia de la palabra $w$ en todas las clases
+
+## Paso 5: c-TF-IDF (continuación)
+
+```{python, echo=TRUE}
+# Excluimos los outliers
+topic_ids = sorted([c for c in set(clusters) if c != -1])
+topic_ids
+```
+
+```{python, echo=TRUE}
+
+# Sumamos las frecuencias de cada palabra en cada tópico
+X_topics = []
+for c in topic_ids:
+    idx = np.where(clusters == c)[0] # indices del cluster c
+    X_topics.append(X[idx].sum(axis=0)) # sumar las frecuencias de cada palabra del cluster c
+
+# COnvertir a una matriz de (n_topic, n_terms)
+X_topics = [np.array(row).ravel() for row in X_topics]  # lista de (n_terms,)
+X_topics = np.array(X_topics)
+
+```
+
+
+
+## Paso 5: c-TF-IDF (continuación)
+
+
+```{python, echo=TRUE}
+from bertopic.vectorizers import ClassTfidfTransformer
+ctfidf = ClassTfidfTransformer().fit_transform(X_topics, len(docs))
+print("Las dimensiones de la matriz son: ", ctfidf.shape)
+```
+
+## Todo junto
+
+```{python, echo=TRUE, eval=FALSE}
+
+from bertopic.representation import KeyBERTInspired
+
+# Paso 1 - Extract embeddings
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+
+# Paso 2 - Reduce dimensionality
+umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine')
+
+# Paso 3 - Cluster reduced embeddings
+hdbscan_model = HDBSCAN(min_cluster_size=35, metric='euclidean', cluster_selection_method='eom', prediction_data=True)
+
+# Paso 4 - Tokenize topics
+vectorizer_model = CountVectorizer(stop_words=stopwords_es, min_df = 3)
+
+# Paso 5 - Create topic representation
+ctfidf_model = ClassTfidfTransformer()
+
+# Step 6 - (Optional) Fine-tune topic representations with
+# a `bertopic.representation` model
+representation_model = KeyBERTInspired()
+
+# All steps together
+topic_model = BERTopic(
+  embedding_model=embedding_model,          # Step 1 - Extract embeddings
+  umap_model=umap_model,                    # Step 2 - Reduce dimensionality
+  hdbscan_model=hdbscan_model,              # Step 3 - Cluster reduced embeddings
+  vectorizer_model=vectorizer_model,        # Step 4 - Tokenize topics
+  ctfidf_model=ctfidf_model,                # Step 5 - Extract topic words
+  representation_model=representation_model # Step 6 - (Optional) Fine-tune topic representations
+)
+
+# Correr el modelo
+topics, probs = topic_model.fit_transform(docs)
+```
+
+
+## Cargaremos el modelo ya entrenado
+
+```{python, echo=TRUE}
+import pandas as pd
+import pickle
+import numpy as np
+import plotly.express as px
+import datamapplot as dmp
+import pickle
+import io
+import torch
+
+```
+
+
+```{python, echo=TRUE}
+
+# Cargar títulos de noticias 
+data = pd.read_parquet("data/titulos.parquet")
+docs = list(data.text)
+del data
+
+# Cargar algunas cosas que están dentro del modelo
+with open('data/bertopic_results.pkl', 'rb') as f:
+    data = pickle.load(f)
+    topics = data['topics']
+    probs = data['probs']
+
+
+# Cargar el modelo completo
+#with open('data/bertopic_model.pkl', 'rb') as f:
+#    topic_model = pickle.load(f)
+
+# Clase para cargar el modelo en CPU
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        return super().find_class(module, name)
+
+# Cargar el modelo de BERTopic en CPU
+with open('data/bertopic_model.pkl', 'rb') as f:
+    topic_model = CPU_Unpickler(f).load()
+
+
+# Cargar títulos creados por gemini
+with open("data/topic_titles.pkl", 'rb') as f:
+    topic_titles = pickle.load(f)
+
+
+# Cargar embeddings en d2
+with open("data/embeddings_2d.pkl", "rb") as f:
+    embeddings_2d = pickle.load(f)
+
+print("Terminé de cargar todo")
+
+```
+
+## Trabajo previo a la visualización
+
+```{python, echo=TRUE}
+
+#  Obtener la información de los documentos
+docs_info = topic_model.get_document_info(docs)
+
+# Crear un diccionario con los tópicos a partir de la lista
+topic_id_to_title =  {i:topic_titles[i + 1 ]  for i in range(-1, len(topic_titles) - 1)    }
+
+docs_info["Topic_Title"] = docs_info["Topic"].map(topic_id_to_title)
+
+# Obtén los clusters (topics)
+topic_labels = np.array(topics)
+
+
+# Filtra los outliers (topic -1)
+mask = topic_labels != -1
+embeddings_2d_filtered = embeddings_2d[mask]
+topic_labels_filtered = topic_labels[mask]
+custom_labels_filtered = docs_info["Topic_Title"][mask]
+titles_filtered = np.array(docs)[mask]  # docs debe ser la lista de títulos
+
+```
+
+## Visualización interactiva
+
+```{python, echo=TRUE}
+
+# Acomodar los nombres de los clusters para el paquete de visualización
+arr_str = custom_labels_filtered.astype(str)
+
+# Armar la leyenda que aparece en el hover
+combined_hover_text = [f"NOTICIA: {title}\nCLUSTER {text}" for title, text in zip(titles_filtered, arr_str)]
+
+# Visualización
+plot = dmp.create_interactive_plot(
+    embeddings_2d_filtered,
+    arr_str,
+    hover_text=combined_hover_text
+)
+
+plot
+
+```
 
 ## Más recursos
 
@@ -411,18 +728,15 @@ beta_wide %>%
 
 Hemos revisado varias estrategias para trabajar con texto
 
-- Procesamiento básico con stringr
-- Herramientas para POS con udpipe
-- Exploración y procesamiento de textos con quanteda
-- Transformación en vectores (tfidf)
-- Utilización de *embeddings* con Python (combinación con reticulate)
-- Algunas herramientas no supervisadas
-
+-   Procesamiento básico con stringr
+-   Herramientas para POS con udpipe
+-   Exploración y procesamiento de textos con quanteda
+-   Transformación en vectores (tfidf)
+-   Utilización de *embeddings* con Python (combinación con reticulate)
+-   Algunas herramientas no supervisadas
 
 . . .
 
 **Cuentan con una serie de herramientas para desarrollar su trabajo final**
-
-
 
 # Métodos computacionales para las ciencias sociales {.center background-color="aquamarine"}
