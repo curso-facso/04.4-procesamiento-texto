@@ -438,7 +438,7 @@ print(docs[0:10])
 
 ## Paso 1: construir embeddings
 
-```{python, echo = TRUE}
+```{python, echo = TRUE, output = FALSE }
 from bertopic import BERTopic
 from sentence_transformers import SentenceTransformer
 
@@ -450,13 +450,15 @@ topic_model = BERTopic(embedding_model=embedding_model)
 
 # Generamos los embeddings
 topic_model.fit_transform(docs)
-print("Terminé de generar embeddings")
 
+
+```
+
+```{python, echo=TRUE}
 # Guardamos los embeddings en un un arreglo
 embeddings =  topic_model._extract_embeddings(docs, method="document")
+print(embeddings.shape)
 
-# Tenemos una matriz 
-print("Dimensiones de la matriz de embeddings:", embeddings.shape)
 ```
 
 ## Paso 2: reducción de dimensionalidad
@@ -478,13 +480,17 @@ Aplicamos HDBSCAN a la matriz reducida que viene de UMAP
 
 El tópico -1 corresponde a *outliers*
 
-```{python, echo=TRUE}
+```{python, echo=TRUE, output = FALSE}
 from hdbscan import HDBSCAN
 hdbscan_model = HDBSCAN(min_cluster_size=3, metric='euclidean', cluster_selection_method='eom', prediction_data=True)
-hdbscan_model.fit(umap_embeddings)
+hdbscan_model.fit(umap_embeddings);
+
+
+```
+
+```{python, echo=TRUE}
 clusters = hdbscan_model.labels_
 print(clusters)
-
 
 ```
 
