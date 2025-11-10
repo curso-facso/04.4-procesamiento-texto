@@ -74,17 +74,33 @@ corpus <- corpus(textos_largos, text_field = "body")
 
 
 dfm <- corpus %>%
- tokens() %>% 
- tokens_select(stopwords("es"), selection = "remove") %>%   
+ tokens(remove_punct = T) %>% 
+ tokens_select(stopwords("es"), selection = "remove") %>%  
  dfm() 
 
 # Gráfico para Argentina
-tstat_key <- textstat_keyness(dfm, target = textos_largos$subreddit == "argentina")
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "argentina")
 textplot_keyness(tstat_key)
 
 
 # Gráfico para Chile
-tstat_key <- textstat_keyness(dfm, target = textos_largos$subreddit == "chile")
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "chile")
+textplot_keyness(tstat_key)
+
+
+```
+```{r}
+
+
+dfm <- corpus %>%
+ tokens(remove_punct = T) %>% 
+ tokens_replace(pattern = "[\\p{So}\\p{Cn}]", replacement = "", valuetype = "regex") %>% 
+ tokens_select(stopwords("es"), selection = "remove") %>%  
+ dfm() 
+
+
+# Gráfico para Argentina
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "argentina")
 textplot_keyness(tstat_key)
 
 ```

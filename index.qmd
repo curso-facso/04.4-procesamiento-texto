@@ -236,6 +236,42 @@ textplot_keyness(tstat_key)
 
 ```
 
+
+## Ejercicio: keyness
+
+Con los mismos datos de reddit, genera el gráfico de palabras claves para los subreddit **argentina** y **chile**
+
+Esta vez vamos a remover **stopwords** y **signos de puntuación**
+
+## comentario ejercicio
+
+**Aun tenemos caracteres extraños**
+
+😀 😍 🤖 😂 🙌
+
+. . .
+
+Podemos sacarlos con esta expresión regular [\\p{So}\\p{Cn}]
+
+
+p{So}: Symbol or other
+
+p{Cn}: Codepoints Not Assigned
+
+```{r}
+dfm <- corpus %>%
+ tokens(remove_punct = T) %>% 
+ tokens_replace(pattern = "[\\p{So}\\p{Cn}]", replacement = "", valuetype = "regex") %>% 
+ tokens_select(stopwords("es"), selection = "remove") %>%  
+ dfm() 
+
+textstat_keyness(dfm, target = dfm$subreddit == "argentina") %>% 
+  textplot_keyness()
+
+```
+
+
+
 ## Wordfish (Slapin & Proksch, 2008)
 
 Modelo no supervisado para hacer posicionamiento ideológico
@@ -797,6 +833,16 @@ plot = dmp.create_interactive_plot(
 plot
 
 ```
+
+
+## Si queda tiempo...
+
+Utiliza los datos de reddit, para construir una visualización de tópicos
+
+Trabajaremos en python, usando google colab
+
+
+
 
 ## Más recursos
 
