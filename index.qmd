@@ -126,6 +126,80 @@ Comparación entre tendencias políticas
 ¿Más ideas?
 :::
 
+## Ejercicio
+
+Analicemos la riqueza léxica em usuarios de reddit
+
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+
+comments <- read_csv("data/comments_reddit.csv")
+posts <- read_csv("data/posts_reddit.csv")
+
+names(posts)
+names(comments)
+
+
+  
+
+```
+
+## Ejercicio: reddit
+
+::: panel-tabset
+## Users
+```{r}
+
+users <- comments %>%
+  filter(!is.na(full_author)) %>% 
+  group_by(full_author) %>% 
+  summarise(frecuencia = n()) %>% 
+  arrange(desc(frecuencia))
+
+users %>% 
+  ggplot(aes(frecuencia)) +
+  geom_histogram()
+
+
+```
+
+## subreddits
+
+```{r}
+comments_subreddit <- comments %>% 
+  left_join(posts %>% 
+              select(post_id, subreddit),
+            by = "post_id")
+
+comments_subreddit %>% 
+  group_by(subreddit) %>% 
+  summarise(frecuencia = n()) %>% 
+  ggplot(aes(x = subreddit, y = frecuencia)) +
+  geom_bar(stat = "identity") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+
+```
+
+
+:::
+
+
+## Ejercicio: reddit
+
+- Dejar solo los comentarios con más de 15 palabras
+
+**Calcula lo siguiente**:
+
+- La riqueza léxica de cada comentario y crea un histograma
+
+- La riqueza léxica media para cada usuario y crea un histograma
+
+- Riqueza léxica media por subreddit y crea un gráfico de barras
+
+
+
+
+
 ## Análisis de frecuencia relativa (keyness)
 
 Estamos interesados en comparar textos
