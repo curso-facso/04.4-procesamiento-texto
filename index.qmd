@@ -131,9 +131,13 @@ Comparación entre tendencias políticas
 
 ## Ejercicio
 
-Analicemos la riqueza léxica em usuarios de reddit
+Analicemos la riqueza léxica en usuarios de reddit
 
-```{r, message=FALSE, warning=FALSE}
+Los datos están [acá](https://1drv.ms/f/c/3ba457a6b989f5e0/Ej_lJp_rhaJHkjIZgoO6OLcBkeMpK0uyc1uBp45jzPvOVA?e=6QMI6W)
+
+Miremos un poco los datos
+
+```{r, message=FALSE, warning=FALSE, echo=TRUE}
 library(readr)
 
 comments <- read_csv("data/comments_reddit.csv")
@@ -246,7 +250,7 @@ Con los mismos datos de reddit, genera el gráfico de palabras claves para los s
 
 Esta vez vamos a remover **stopwords** y **signos de puntuación**
 
-## comentario ejercicio
+## Comentario emojis
 
 **Aun tenemos caracteres extraños**
 
@@ -261,15 +265,29 @@ p{So}: Symbol or other
 
 p{Cn}: Codepoints Not Assigned
 
-```{r}
+```{r, echo=TRUE}
+
+# Dejar solo textos con 15 palabras o más
+textos_largos <- comments_subreddit %>% 
+  mutate(n_palabras = str_count(body, "\\S+")) %>% 
+  filter(n_palabras >= 15)
+
+# Convertir a corpus
+corpus <- corpus(textos_largos, text_field = "body")
+
+# Agregamos expresión regular
 dfm <- corpus %>%
  tokens(remove_punct = T) %>% 
  tokens_replace(pattern = "[\\p{So}\\p{Cn}]", replacement = "", valuetype = "regex") %>% 
  tokens_select(stopwords("es"), selection = "remove") %>%  
  dfm() 
 
-textstat_keyness(dfm, target = dfm$subreddit == "argentina") %>% 
-  textplot_keyness()
+# Gráfico para Argentina
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "argentina")
+textplot_keyness(tstat_key)
+
+
+
 
 ```
 
@@ -580,6 +598,8 @@ Aplicamos UMAP a la matriz de embeddings
 
 ```{python, echo=TRUE}
 from umap import UMAP
+# Queremos las primeras 5 componentes
+# n_neighbors determina la construcción de un grafo
 umap_model = UMAP(n_neighbors=15, n_components=5, min_dist=0.0, metric='cosine')
 umap_embeddings = umap_model.fit_transform(embeddings)
 print(umap_embeddings.shape)
@@ -638,6 +658,7 @@ X = vectorizer_model.fit_transform(docs)
 
 ## Paso 4: vectorización (continuación)
 
+
 ```{python, echo=TRUE}
 print("Las dimensiones de la matriz son: ", X.shape)
 
@@ -672,15 +693,21 @@ topic_ids = sorted([c for c in set(clusters) if c != -1])
 topic_ids
 ```
 
+
+
+
 ```{python, echo=TRUE}
 
 # Sumamos las frecuencias de cada palabra en cada tópico
+# clusters contiene el cluster asignado a cada uno de los 500 documentos 
 X_topics = []
 for c in topic_ids:
-    idx = np.where(clusters == c)[0] # indices del cluster c
+    idx = np.where(clusters == c)[0] # indices del cluster c. Contiene los documentos de cada cluster
     X_topics.append(X[idx].sum(axis=0)) # sumar las frecuencias de cada palabra del cluster c
 
 # COnvertir a una matriz de (n_topic, n_terms)
+# ravel aplana los elementos, para que no tengan dos dimensiones, sino solo una. 
+# Eso permite apilar filas
 X_topics = [np.array(row).ravel() for row in X_topics]  # lista de (n_terms,)
 X_topics = np.array(X_topics)
 
@@ -689,6 +716,11 @@ X_topics = np.array(X_topics)
 
 
 ## Paso 5: c-TF-IDF (continuación)
+
+Este enfoque nos permite:
+
+- Encontrar palabras clave para cada tópico
+- Encontrar documentos representativos de cada tópico
 
 
 ```{python, echo=TRUE}
@@ -738,9 +770,7 @@ topics, probs = topic_model.fit_transform(docs)
 
 ## Miremos los tópicos
 
-Los tópicos no quedaron tan bien formados
-
-Son muy pocos datos
+Los tópicos no tienen nombres interpretables
 
 
 ```{python}
@@ -752,7 +782,7 @@ info[["Name", "Representation"]]
 
 ## Cargaremos el modelo ya entrenado
 
-Cargaremos archivos de un modelo ya entrenado
+Cargaremos archivos de un modelo ya entrenado con datos de ~200.000 noticias
 
 
 ```{python, echo=TRUE}
@@ -810,7 +840,9 @@ print("Terminé de cargar todo")
 
 ## ¿Cómo mejorar los nombres?
 
-```{python}
+Estos son los tópicos que salieron de un procesamiento anterior
+
+```{python, echo = TRUE}
 info =  topic_model.get_topic_info()
 info[["Name", "Representation"]][1:4]
 ```
@@ -823,7 +855,7 @@ Veamos cómo funciona
 
 . . .
 
-```{python}
+```{python, echo = TRUE}
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os 
@@ -859,7 +891,7 @@ Veamos cómo implementar para un tópico
 
 . . .
 
-```{python}
+```{python, echo = TRUE}
 
 # Tomamos el primer tópico del modelo entrenado previamente
 info =  topic_model.get_topic_info()
@@ -874,7 +906,8 @@ palabras_texto = ", ".join(palabras_principales)
 docs_representativos = list(first_topic['Representative_Docs'])[0]
 contexto_docs = ". ".join(docs_representativos)
 
-# Creamos un prompt
+# Creamos un prompt. 
+# Se insertan en el prompt la información que devuelve bertopic 
 prompt = f"Estoy tratando de ponerle nombre a clusters que provienen de bertopic. Basándote en estas palabras clave: {palabras_texto} y estos ejemplos: {contexto_docs}. Crea un solo título descriptivo corto para mi cluster. No agregues ningún comentario. Quiero solo el título"
 
 # Generar la consulta
@@ -893,7 +926,7 @@ La idea es hacer el proceso anterior iterativamente, para cada uno de los tópic
 Este proceso es lento zzz. Yo ya lo hice
 
 
-```{python}
+```{python, echo = TRUE}
 # Cargar títulos creados por gemini
 with open("data/topic_titles.pkl", 'rb') as f:
     topic_titles = pickle.load(f)
@@ -949,9 +982,23 @@ plot
 
 ## Si queda tiempo...
 
-Utiliza los datos de reddit, para construir una visualización de tópicos
+Experimentaremos con un modelo de IA
+
+. . .
+
+Utiliza los datos de reddit, para identificar lenguaje ofensivo. La idea es construir un prompt que logre capturar ese tipo de interacciones 
+
+. . .
 
 Trabajaremos en python, usando google colab
+
+**Pasos**:
+
+1) Explorar google colab (a través de gmail)
+
+2) Obtener API Key para modelo de gemini (entrar a aistudio.google.com)
+
+3) Escribir el código para cumplir la misión   
 
 
 
