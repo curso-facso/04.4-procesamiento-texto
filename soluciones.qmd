@@ -1,0 +1,107 @@
+---
+title: "Soluciones"
+format: pdf
+editor: visual
+---
+
+## Soluciones clase 4.4
+
+### Problema 1: reddit
+
+- Dejar solo los comentarios con más de 15 palabras
+
+**Calcula lo siguiente**:
+
+- La riqueza léxica de cada comentario y crea un histograma
+
+- La riqueza léxica media para cada usuario y crea un histograma
+
+- Riqueza léxica media por subreddit y crea un gráfico de barras
+
+
+```{r}
+
+
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(dplyr)
+
+# Dejar solo textos con 15 palabras o más
+textos_largos <- comments_subreddit %>% 
+  mutate(n_palabras = str_count(body, "\\S+")) %>% 
+  filter(n_palabras >= 15)
+
+# Matriz DFM
+dfm_mat <- textos_largos %>% 
+  select(text = body, subreddit, full_author) %>% 
+  corpus() %>% 
+  tokens() %>% 
+  dfm() 
+
+# calcular la diversidad y agregarla al dataframe original  
+diversidad <- textstat_lexdiv(dfm_mat )
+textos_largos["diversidad"] <- diversidad["TTR"]
+
+# Todos los textos
+textos_largos %>% 
+   ggplot(aes(diversidad)) +
+   geom_histogram()
+
+# Promediando por autor
+textos_largos %>% 
+  group_by(full_author) %>% 
+  summarise(media = mean(diversidad)) %>% 
+  ggplot(aes(media)) +
+  geom_histogram()
+  
+# Promediando por subreddit
+textos_largos %>% 
+  group_by(subreddit) %>% 
+  summarise(media = mean(diversidad)) %>% 
+  ggplot(aes(subreddit, media)) +
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))
+
+
+```
+
+### Ejercicio 2
+
+```{r}
+
+corpus <- corpus(textos_largos, text_field = "body")
+
+
+dfm <- corpus %>%
+ tokens(remove_punct = T) %>% 
+ tokens_select(stopwords("es"), selection = "remove") %>%  
+ dfm() 
+
+# Gráfico para Argentina
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "argentina")
+textplot_keyness(tstat_key)
+
+
+# Gráfico para Chile
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "chile")
+textplot_keyness(tstat_key)
+
+
+```
+```{r}
+
+
+dfm <- corpus %>%
+ tokens(remove_punct = T) %>% 
+ tokens_replace(pattern = "[\\p{So}\\p{Cn}]", replacement = "", valuetype = "regex") %>% 
+ tokens_select(stopwords("es"), selection = "remove") %>%  
+ dfm() 
+
+
+# Gráfico para Argentina
+tstat_key <- textstat_keyness(dfm, target = dfm$subreddit == "argentina")
+textplot_keyness(tstat_key)
+
+```
+
