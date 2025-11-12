@@ -14,6 +14,9 @@ execute:
     executable: ./.venv/bin/python
 ---
 
+
+
+
 ```{r, echo=FALSE}
 library(kableExtra)
 library(tidyverse)
@@ -494,6 +497,10 @@ print(clusters)
 
 ```
 
+
+
+
+
 ## Paso 4: vectorización
 
 Los textos son transformados en una matriz BoW
@@ -619,8 +626,24 @@ topic_model = BERTopic(
 topics, probs = topic_model.fit_transform(docs)
 ```
 
+## Miremos los tópicos
+
+Los tópicos no quedaron tan bien formados
+
+Son muy pocos datos
+
+
+```{python}
+info =  topic_model.get_topic_info()
+info[["Name", "Representation"]]
+```
+
+
 
 ## Cargaremos el modelo ya entrenado
+
+Cargaremos archivos de un modelo ya entrenado
+
 
 ```{python, echo=TRUE}
 import pandas as pd
@@ -635,9 +658,11 @@ import torch
 ```
 
 
+
+
 ```{python, echo=TRUE}
 
-# Cargar títulos de noticias 
+# Cargar títulos de noticias ~200.000
 data = pd.read_parquet("data/titulos.parquet")
 docs = list(data.text)
 del data
@@ -665,18 +690,106 @@ with open('data/bertopic_model.pkl', 'rb') as f:
     topic_model = CPU_Unpickler(f).load()
 
 
-# Cargar títulos creados por gemini
-with open("data/topic_titles.pkl", 'rb') as f:
-    topic_titles = pickle.load(f)
-
-
-# Cargar embeddings en d2
+# Cargar embeddings en d2. Contiene la conversión de los datos a vectores
 with open("data/embeddings_2d.pkl", "rb") as f:
     embeddings_2d = pickle.load(f)
 
 print("Terminé de cargar todo")
 
 ```
+
+## ¿Cómo mejorar los nombres?
+
+```{python}
+info =  topic_model.get_topic_info()
+info[["Name", "Representation"]][1:4]
+```
+
+## Trabajando con Gemini
+
+Usaremos un LLM, para que "bautice" nuestros tópicos
+
+Veamos cómo funciona
+
+. . .
+
+```{python}
+from dotenv import load_dotenv
+import google.generativeai as genai
+import os 
+
+# Cargamos las variables de ambiente
+load_dotenv(override=True)
+genai.configure(api_key=os.getenv('API_KEY'))
+model = genai.GenerativeModel('gemini-2.5-flash-lite')
+
+# Configuración de generación
+generation_config = genai.types.GenerationConfig(
+    max_output_tokens=100, # para que 
+    temperature=0.7, # regula la creatividad 
+    candidate_count=1 # queremos solo una respuesta
+)
+
+# Le mandamos el prompt al modelo
+prompt = "Hazme un resumen del libro El Principito"
+response = model.generate_content(prompt, generation_config=generation_config)
+print(response.text)
+```
+
+## Pidiendo títulos para tópicos
+
+Bertopic entrega dos insumos interesantes
+
+- Palabras clave de cada tópico
+
+- Textos representativos
+
+
+Veamos cómo implementar para un tópico 
+
+. . .
+
+```{python}
+
+# Tomamos el primer tópico del modelo entrenado previamente
+info =  topic_model.get_topic_info()
+first_topic = info[1:2]
+
+# Bertopic encuentra palabras representativas
+palabras_topico = list(first_topic["Representation"]) 
+palabras_principales = [palabra for palabra in palabras_topico[:5]][0]
+palabras_texto = ", ".join(palabras_principales)
+
+# COmbinamos los textos representativos del tópico en un solo gran texto
+docs_representativos = list(first_topic['Representative_Docs'])[0]
+contexto_docs = ". ".join(docs_representativos)
+
+# Creamos un prompt
+prompt = f"Estoy tratando de ponerle nombre a clusters que provienen de bertopic. Basándote en estas palabras clave: {palabras_texto} y estos ejemplos: {contexto_docs}. Crea un solo título descriptivo corto para mi cluster. No agregues ningún comentario. Quiero solo el título"
+
+# Generar la consulta
+response = model.generate_content(prompt, generation_config=generation_config)
+print(response.text)
+
+```
+
+
+## Carguemos los títulos creados con Gemini
+
+La idea es hacer el proceso anterior iterativamente, para cada uno de los tópicos
+
+. . .
+
+Este proceso es lento zzz. Yo ya lo hice
+
+
+```{python}
+# Cargar títulos creados por gemini
+with open("data/topic_titles.pkl", 'rb') as f:
+    topic_titles = pickle.load(f)
+
+```
+
 
 ## Trabajo previo a la visualización
 
@@ -692,7 +805,6 @@ docs_info["Topic_Title"] = docs_info["Topic"].map(topic_id_to_title)
 
 # Obtén los clusters (topics)
 topic_labels = np.array(topics)
-
 
 # Filtra los outliers (topic -1)
 mask = topic_labels != -1
