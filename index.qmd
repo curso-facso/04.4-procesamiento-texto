@@ -29,6 +29,9 @@ Tópicos sobre análisis de texto
 -   Diversidad léxica
 -   *Keyness*
 -   *Wordfish*
+-   Bertopic
+
+Comencemos con la descarga de datos [acá](https://1drv.ms/f/c/3ba457a6b989f5e0/Ej_lJp_rhaJHkjIZgoO6OLcBkeMpK0uyc1uBp45jzPvOVA?e=acDGPL)
 
 ## Diversidad léxica
 
